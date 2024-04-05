@@ -10,6 +10,7 @@ import (
 	"sort"
 )
 
+// определение структуры файла
 type Files struct {
 	name      string
 	extension string
@@ -18,9 +19,12 @@ type Files struct {
 
 var s []Files
 
+// определение функции для ввода информации классы Files в консоль
 func (ob *Files) print() {
 	fmt.Println("Name:", ob.name, "Type:", ob.extension, "FileSize/byte", ob.size)
 }
+
+// определение функции для получения строк через консоль
 func getFilePathFromCommand(root string, sort string) (string, string, error) {
 	if root == "None" || sort == "None" {
 		fmt.Println("->Введите правильную командную строку:(--root=/pathfile  --sort=Desc) or --root=/pathfile")
@@ -32,6 +36,8 @@ func getFilePathFromCommand(root string, sort string) (string, string, error) {
 	flag.Parse()
 	return *sourcepath, *sortflag, nil
 }
+
+// функция для проверкаи попки
 func rootExist(root string) (bool, error) {
 	_, err := os.Stat(root)
 	if os.IsNotExist(err) {
@@ -39,6 +45,7 @@ func rootExist(root string) (bool, error) {
 	}
 	return true, nil
 }
+
 func getRoot(root string) (string, error) {
 	var rootflag *string
 	rootflag = flag.String(root, "None", "")
@@ -49,15 +56,23 @@ func getRoot(root string) (string, error) {
 	}
 	return *rootflag, nil
 }
+
+// метод для получения значения size класса
 func (ob *Files) getSize() int64 {
 	return ob.size
 }
+
+// метод для получения значения name класса
 func (ob *Files) getName() string {
 	return ob.name
 }
+
+// метод для получения значения Extension класса
 func (ob *Files) getExtension() string {
 	return ob.extension
 }
+
+// метод для получение информации о файлах
 func getFilesRecurvise(path string) (bool, error) {
 	_, err := os.Stat(path)
 	if err != nil {
@@ -65,12 +80,16 @@ func getFilesRecurvise(path string) (bool, error) {
 	}
 	return true, nil
 }
+
+// метод для получение информации католога файлы
 func getFileLocation(root string, filename string) (string, error) {
 	if root == "" {
 		return "", errors.New("Root  пуст!")
 	}
 	return root + "/" + filename, nil
 }
+
+// Получение все файл из котолога
 func getAllFromDir(path string) ([]Files, error) {
 	err := filepath.Walk(path, func(p string, inf os.FileInfo, err error) error {
 		if err != nil {
@@ -94,6 +113,8 @@ func getAllFromDir(path string) ([]Files, error) {
 	}
 	return s, nil
 }
+
+// функция для получения значения  size
 func getsize(filename string) (int64, error) {
 	f, err := os.Stat(filename)
 	if err != nil {
@@ -101,6 +122,8 @@ func getsize(filename string) (int64, error) {
 	}
 	return f.Size(), nil
 }
+
+// функция для получения значения  Extension
 func getFileExtension(root string, filename string) (string, error) {
 	f, err := getFileLocation(root, filename)
 	if err != nil {
@@ -115,6 +138,8 @@ func getFileExtension(root string, filename string) (string, error) {
 	}
 	return "файл", nil
 }
+
+// функция для получения значения  Extension2
 func getFileExtension2(filename string) (string, error) {
 	f, err := os.Stat(filename)
 	if err != nil {
@@ -125,6 +150,8 @@ func getFileExtension2(filename string) (string, error) {
 	}
 	return "файл", nil
 }
+
+// функция для получения значения  файлы из католога
 func getFilesFromDirectory(pathName string) ([]Files, error) {
 	fi, err := os.Open(pathName)
 	if err != nil {
@@ -148,6 +175,8 @@ func getFilesFromDirectory(pathName string) ([]Files, error) {
 	}
 	return s, nil
 }
+
+// функция для Обработки сортировки по Убывающий
 func sortAsc(arr []Files) {
 	if len(arr) < 0 {
 		fmt.Println("Массив пуст!")
@@ -157,6 +186,7 @@ func sortAsc(arr []Files) {
 	})
 }
 
+// функция для Обработки сортировки по возврастающий
 func sortDesc(arr []Files) {
 	if len(arr) < 0 {
 		fmt.Println("Массив пуст!")

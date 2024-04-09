@@ -196,30 +196,32 @@ func sortDesc(arr []Files) {
 	})
 }
 
+// выборка сортировки
+func selectSord(struc []Files, root string, sortMode string) error {
+	if len(struc) < 0 {
+		log.Panic("Нет элементов в массиве!")
+	}
+	if root != "None" && sortMode == "None" {
+		sortAsc(struc)
+		for i := 0; i < len(struc); i++ {
+			struc[i].print()
+		}
+	} else if sortMode == "Desc" && root != "None" {
+		sortDesc(struc)
+		for i := 0; i < len(struc); i++ {
+			struc[i].print()
+		}
+	}
+	return nil
+}
+
 func main() {
 	rootflag := "root"
 	sortflag := "sort"
 	root, sort, err := getFilePathFromCommand(rootflag, sortflag)
+	files, err := getFilesFromDirectory(root)
 	if err != nil {
 		fmt.Println(err)
 	}
-	if root != "None" && sort == "None" {
-		list, err := getAllFromDir(root)
-		if err != nil {
-			panic(err)
-		}
-		sortAsc(list)
-		for i := 0; i < len(list); i++ {
-			list[i].print()
-		}
-	} else if sort == "Desc" && root != "None" {
-		list, err := getAllFromDir(root)
-		if err != nil {
-			panic(err)
-		}
-		sortDesc(list)
-		for i := 0; i < len(list); i++ {
-			list[i].print()
-		}
-	}
+	selectSord(files, root, sort)
 }
